@@ -12,10 +12,10 @@ include('includes/config.php');
 define('DB_HOST','localhost');
 define('DB_USER','root');
 define('DB_PASS','');
-define('DB_NAME','elms');
+define('DB_NAME','ecosave');
 if(isset($_POST['add']))
 {
-$empid=$_POST['empcode'];
+$rid=$_POST['rcode'];
 $fname=$_POST['firstName'];
 $email=$_POST['email']; 
 $password=$_POST['password']; 
@@ -23,10 +23,10 @@ $dob=$_POST['dob'];
 $address=$_POST['address']; 
 $points=1;
 
-$sql="INSERT INTO tblrecyclers(EmpId,FirstName,EmailId,Password,Dob,Address,Points) 
-VALUES(:empid,:fname,:email,:password,:dob,:address,:points)";
+$sql="INSERT INTO tblrecyclers(RId,FirstName,EmailId,Password,Dob,Address,Points) 
+VALUES(:rid,:fname,:email,:password,:dob,:address,:points)";
 $query = $dbh->prepare($sql);
-$query->bindParam(':empid',$param_empid,PDO::PARAM_STR);
+$query->bindParam(':rid',$param_rid,PDO::PARAM_STR);
 $query->bindParam(':fname',$fname,PDO::PARAM_STR);
 $query->bindParam(':email',$email,PDO::PARAM_STR);
 $query->bindParam(':password',$param_password,PDO::PARAM_STR);
@@ -34,7 +34,7 @@ $query->bindParam(':dob',$dob,PDO::PARAM_STR);
 $query->bindParam(':address',$address,PDO::PARAM_STR);
 $query->bindParam(':points',$points,PDO::PARAM_STR);
 
-$param_empid = $empid;
+$param_rid = $rid;
 $param_password = password_hash($password, PASSWORD_DEFAULT);
 
 $query->execute();
@@ -72,10 +72,10 @@ else
     <script type="text/javascript">
 function valid()
 {
-if(document.addemp.password.value!= document.addemp.confirmpassword.value)
+if(document.addr.password.value!= document.addr.confirmpassword.value)
 {
 alert("New Password and Confirm Password Field do not match!");
-document.addemp.confirmpassword.focus();
+document.addr.confirmpassword.focus();
 return false;
 }
 return true;
@@ -83,14 +83,14 @@ return true;
 </script>
 
 <script>
-function checkAvailabilityEmpid() {
+function checkAvailabilityRid() {
 $("#loaderIcon").show();
 jQuery.ajax({
 url: "check_availability.php",
-data:'empcode='+$("#empcode").val(),
+data:'rcode='+$("#rcode").val(),
 type: "POST",
 success:function(data){
-$("#empid-availability").html(data);
+$("#rid-availability").html(data);
 $("#loaderIcon").hide();
 },
 error:function (){}
@@ -120,7 +120,7 @@ error:function (){}
     <body>
 		<div class="wrapper">
             <h2>Add Recycler</h2>
-                <form id="example-form" method="post" name="addemp">
+                <form id="example-form" method="post" name="addr">
                     <div>
 						<br><br>
 							<section>
@@ -130,9 +130,9 @@ error:function (){}
 	<br>
 
 <div class="form-group">
-<label for="empcode">Username</label>
-<input name="empcode" id="empcode" onBlur="checkAvailabilityEmpid()" type="text" class="form-control" autocomplete="off" required>
-<span id="empid-availability" style="font-size:12px;"></span> 
+<label for="rcode">Username</label>
+<input name="rcode" id="rcode" onBlur="checkAvailabilityrid()" type="text" class="form-control" autocomplete="off" required>
+<span id="rid-availability" style="font-size:12px;"></span> 
 </div>
 
 

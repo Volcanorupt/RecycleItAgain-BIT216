@@ -1,55 +1,38 @@
 <?php
 session_start();
- 
-// Check if the user is already logged in, if yes then redirect him to welcome page
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-    header("location: welcome.php");
-    exit;
-}
-
 error_reporting(0);
 include('includes/config.php');
 define('DB_HOST','localhost');
 define('DB_USER','root');
 define('DB_PASS','');
-define('DB_NAME','elms');
+define('DB_NAME','ecosave');
 if(isset($_POST['add']))
 {
-$empid=$_POST['empcode'];
+$cid=$_POST['ccode'];
 $fname=$_POST['firstName'];
 $email=$_POST['email']; 
-$password=$_POST['password']; 
+$password=md5($_POST['password']); 
 $dob=$_POST['dob']; 
 $address=$_POST['address']; 
 $points=1;
 
-$sql="INSERT INTO tblcollectors(EmpId,FirstName,EmailId,Password,Dob,Address,Points) 
-VALUES(:empid,:fname,:email,:password,:dob,:address,:points)";
+$sql="INSERT INTO tblcollectors(CId,FullName,EmailId,Password,Dob,Address,Points) 
+VALUES(:cid,:fname,:email,:password,:dob,:address,:points)";
 $query = $dbh->prepare($sql);
-$query->bindParam(':empid',$param_empid,PDO::PARAM_STR);
+$query->bindParam(':cid',$cid,PDO::PARAM_STR);
 $query->bindParam(':fname',$fname,PDO::PARAM_STR);
 $query->bindParam(':email',$email,PDO::PARAM_STR);
-$query->bindParam(':password',$param_password,PDO::PARAM_STR);
+$query->bindParam(':password',$password,PDO::PARAM_STR);
 $query->bindParam(':dob',$dob,PDO::PARAM_STR);
 $query->bindParam(':address',$address,PDO::PARAM_STR);
 $query->bindParam(':points',$points,PDO::PARAM_STR);
-
-$param_empid = $empid;
-$param_password = password_hash($password, PASSWORD_DEFAULT);
-
 $query->execute();
 $lastInsertId = $dbh->lastInsertId();
 if($lastInsertId)
-{
-$msg="Collector record added Successfully";
-}
+{$msg="Collector record added Successfully";}
 else 
-{
-$error="Something went wrong. Please try again";
+{$error="Something went wrong. Please try again";}
 }
-
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -64,19 +47,33 @@ $error="Something went wrong. Please try again";
         <meta name="description" content="Responsive Admin Dashboard Template" />
         <meta name="keywords" content="admin,dashboard" />
         <meta name="author" content="Steelcoders" />
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-		<style type="text/css">
-			body{ font: 14px sans-serif; }
-			.wrapper{ width: 350px; padding: 20px; }
-		</style>
-		
+        
+        <!-- Styles -->
+  <style>
+        .errorWrap {
+    padding: 10px;
+    margin: 0 0 20px 0;
+    background: #fff;
+    border-left: 4px solid #dd3d36;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+}
+.succWrap{
+    padding: 10px;
+    margin: 0 0 20px 0;
+    background: #fff;
+    border-left: 4px solid #5cb85c;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+}
+        </style>
     <script type="text/javascript">
 function valid()
 {
-if(document.addemp.password.value!= document.addemp.confirmpassword.value)
+if(document.addc.password.value!= document.addc.confirmpassword.value)
 {
-alert("New Password and Confirm Password Field do not match!");
-document.addemp.confirmpassword.focus();
+alert("New Password and Confirm Password Field do not match  !!");
+document.addc.confirmpassword.focus();
 return false;
 }
 return true;
@@ -84,14 +81,14 @@ return true;
 </script>
 
 <script>
-function checkAvailabilityEmpid() {
+function checkAvailabilityCid() {
 $("#loaderIcon").show();
 jQuery.ajax({
 url: "check_availability.php",
-data:'empcode='+$("#empcode").val(),
+data:'ccode='+$("#ccode").val(),
 type: "POST",
 success:function(data){
-$("#empid-availability").html(data);
+$("#cid-availability").html(data);
 $("#loaderIcon").hide();
 },
 error:function (){}
@@ -119,56 +116,79 @@ error:function (){}
 
     </head>
     <body>
-		<div class="wrapper">
-            <h2>Add Collector</h2>
-				<form id="example-form" method="post" name="addemp">
-                    <div>
-						<br><br>
-                            <section>
-<?php if($error){?><div class="errorWrap"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } 
-                else if($msg){?><div class="succWrap"><strong>SUCCESS</strong>: <?php echo htmlentities($msg); ?> </div><?php }?>
+  <?php include('includes/header.php');?>
+            
+       <?php include('includes/sidebar.php');?>
+   <main class="mn-inner">
+                <div class="row">
+                    <div class="col s12">
+                        <div class="page-title">Add Collector</div>
+                    </div>
+                    <div class="col s12 m12 l12">
+                        <div class="card">
+                            <div class="card-content">
+                                <form id="example-form" method="post" name="addc">
+                                    <div>
+                                        <h3>Collector Info</h3>
+                                        <section>
+                                            <div class="wizard-content">
+                                                <div class="row">
+                                                    <div class="col m6">
+                                                        <div class="row">
+     <?php if($error){?><div class="errorWrap"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } 
+                else if($msg){?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo htmlentities($msg); ?> </div><?php }?>
 
-				<br>
-<div class="form-group">			
-<label for="empcode">Username</label>
-<input  name="empcode" id="empcode" onBlur="checkAvailabilityEmpid()" type="text" class="form-control" autocomplete="off" required>
-<span id="empid-availability" style="font-size:12px;"></span>
+
+ <div class="input-field col  s12">
+<label for="ccode">Username</label>
+<input  name="ccode" id="ccode" onBlur="checkAvailabilityCid()" type="text" autocomplete="off" required>
+<span id="cid-availability" style="font-size:12px;"></span> 
 </div>
 
 
-<div class="form-group">
-<label for="firstName">Full name</label>
-<input id="firstName" name="firstName" type="text" class="form-control" required>
+<div class="input-field col m6 s12">
+<label for="firstName">First name</label>
+<input id="firstName" name="firstName" type="text" required>
 </div>
 
-<div class="form-group">
+<div class="input-field col s12">
 <label for="email">Email</label>
-<input  name="email" type="email" class="form-control" id="email" onBlur="checkAvailabilityEmailid()" autocomplete="off" required>
+<input  name="email" type="email" id="email" onBlur="checkAvailabilityEmailid()" autocomplete="off" required>
 <span id="emailid-availability" style="font-size:12px;"></span> 
 </div>
 
-<div class="form-group">
+<div class="input-field col s12">
 <label for="password">Password</label>
-<input id="password" name="password" type="password" class="form-control" autocomplete="off" required>
+<input id="password" name="password" type="password" autocomplete="off" required>
 </div>
 
-<div class="form-group">
-<label for="confirm">Confirm Password</label>
-<input id="confirm" name="confirmpassword" type="password" class="form-control" autocomplete="off" required>
+<div class="input-field col s12">
+<label for="confirm">Confirm password</label>
+<input id="confirm" name="confirmpassword" type="password" autocomplete="off" required>
+</div>
+</div>
+</div>
+                                                    
+<div class="col m6">
+<div class="row">
+
+
+<div class="input-field col m6 s12">
+<label for="birthdate">Birthdate</label>
+<input id="birthdate" name="dob" type="date" class="datepicker" autocomplete="off" >
 </div>
 
-<div class="form-group">
-<label for="birthdate">Schedule</label>
-<input id="birthdate" name="dob" type="date" class="form-control" autocomplete="off" >
-</div>
+                                                    
 
-<div class="form-group">
+<div class="input-field col m6 s12">
 <label for="address">Address</label>
-<input id="address" name="address" type="text" class="form-control" autocomplete="off" required>
+<input id="address" name="address" type="text" autocomplete="off" required>
 </div>
+
+
                                                         
-<div class="form-group">
-<button type="submit" name="add" onclick="return valid();" id="add" class="btn btn-primary">ADD</button>
+<div class="input-field col s12">
+<button type="submit" name="add" onclick="return valid();" id="add" class="waves-effect waves-light btn indigo m-b-xs">ADD</button>
 
 </div>
 
@@ -186,6 +206,7 @@ error:function (){}
                         </div>
                     </div>
                 </div>
+            </main>
         </div>
         <div class="left-sidebar-hover"></div>
         

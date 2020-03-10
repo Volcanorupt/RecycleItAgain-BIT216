@@ -50,8 +50,8 @@ INSERT INTO `admin` (`id`, `UserName`, `Password`, `updationDate`) VALUES
 
 CREATE TABLE `tblcollectors` (
   `id` int(11) NOT NULL,
-  `EmpId` varchar(100) NOT NULL,
-  `FirstName` varchar(150) NOT NULL,
+  `CId` varchar(100) NOT NULL,
+  `FullName` varchar(150) NOT NULL,
   `EmailId` varchar(200) NOT NULL,
   `Password` varchar(180) NOT NULL,
   `Dob` varchar(100) NOT NULL,
@@ -64,11 +64,7 @@ CREATE TABLE `tblcollectors` (
 -- Dumping data for table `tblcollectors`
 --
 
-INSERT INTO `tblcollectors` (`id`, `EmpId`, `FirstName`, `EmailId`, `Password`, `Dob`, `Address`, `Points`, `RegDate`) VALUES
-(1, 'EMP10806121', 'Johnny', 'johnny@gmail.com', 'f925916e2754e5e03f75dd58a5733251', '3 February, 1990', 'N NEPO', 0, '2017-11-10 11:29:59'),
-(3, '321', '321', '321@com', 'c4ca4238a0b923820dcc509a6f75849b', '', '1', 1, '2020-03-09 18:22:56'),
-(4, '321', '321', '321@com', 'caf1a3dfb505ffed0d024130f58c5cfa', '', '321', 1, '2020-03-09 18:23:05'),
-(5, '321', '321', '321@com', 'caf1a3dfb505ffed0d024130f58c5cfa', '', '321', 1, '2020-03-09 18:24:50'),
+INSERT INTO `tblcollectors` (`id`, `CId`, `FullName`, `EmailId`, `Password`, `Dob`, `Address`, `Points`, `RegDate`) VALUES
 (6, '4', '4', '4@com', 'a87ff679a2f3e71d9181a67b7542122c', '20 March, 2020', '4', 1, '2020-03-09 18:25:56'),
 (7, '5', '5', '5@com', 'e4da3b7fbbce2345d7772b0674a318d5', '', '5', 1, '2020-03-09 18:26:51');
 
@@ -80,7 +76,7 @@ INSERT INTO `tblcollectors` (`id`, `EmpId`, `FirstName`, `EmailId`, `Password`, 
 
 CREATE TABLE `tblrecyclers` (
   `id` int(11) NOT NULL,
-  `EmpId` varchar(100) NOT NULL,
+  `CId` varchar(100) NOT NULL,
   `FirstName` varchar(150) NOT NULL,
   `EmailId` varchar(200) NOT NULL,
   `Password` varchar(180) NOT NULL,
@@ -94,9 +90,8 @@ CREATE TABLE `tblrecyclers` (
 -- Dumping data for table `tblrecyclers`
 --
 
-INSERT INTO `tblrecyclers` (`id`, `EmpId`, `FirstName`, `EmailId`, `Password`, `Dob`, `Address`, `Points`, `RegDate`) VALUES
-(1, 'EMP10806121', 'Johnny', 'johnny@gmail.com', 'f925916e2754e5e03f75dd58a5733251', '3 February, 1990', 'N NEPO', 0, '2017-11-10 11:29:59'),
-(3, '1', '1', '1@com', 'c4ca4238a0b923820dcc509a6f75849b', '0001-01-01', '1', 1, '2020-03-09 18:35:25');
+INSERT INTO `tblrecyclers` (`id`, `CId`, `FirstName`, `EmailId`, `Password`, `Dob`, `Address`, `Points`, `RegDate`) VALUES
+(1, 'C10806121', 'Johnny', 'johnny@gmail.com', '1', '3 February, 1990', 'Sabah', 0, '2017-11-10 11:29:59');
 
 --
 -- Indexes for dumped tables
