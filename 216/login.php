@@ -30,7 +30,7 @@ if(isset($_POST['login'])){
   header('location:recycler.php');
   break;
   case 'admin':
-  header('location:admin1.php');
+  header('location:admin.php');
   break;
  }
  }else{
