@@ -22,12 +22,12 @@ if(isset($_POST['login'])){
    $role=$_SESSION['user']['role'];
    //Redirecting User Based on Role
     switch($role){
-  case 'user':
+  case 'collector':
   $_SESSION['userlogin']=$_POST['username'];
-  header('location:changepassword.php');
+  header('location:collector/collector.php');
   break;
   case 'recycler':
-  header('location:recycler.php');
+  header('location:recycler/recycler.php');
   break;
   case 'admin':
   header('location:admin.php');
@@ -93,7 +93,7 @@ if(isset($_POST['login'])){
             </div>
             <div class="card-footer bg-white p-0  ">
                 <div class="card-footer-item card-footer-item-bordered">
-                    <a href="#" class="footer-link">Create An Account</a></div>
+                    <a href="register.php" class="footer-link">Create An Account</a></div>
                 <div class="card-footer-item card-footer-item-bordered">
                     <a href="#" class="footer-link">Forgot Password</a>
                 </div>

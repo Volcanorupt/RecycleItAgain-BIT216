@@ -12,19 +12,22 @@ $db = mysqli_connect('localhost', 'root', '', 'codenair');
 // REGISTER USER
 if (isset($_POST['reg_user'])) {
   // receive all input values from the form
+  $fullname = mysqli_real_escape_string($db, $_POST['fullname']); 
   $username = mysqli_real_escape_string($db, $_POST['username']);
-  $role = mysqli_real_escape_string($db, $_POST['role']);
   $password_1 = mysqli_real_escape_string($db, $_POST['password_1']);
   $password_2 = mysqli_real_escape_string($db, $_POST['password_2']);
-  $fullname = mysqli_real_escape_string($db, $_POST['fullname']);
+  $address = mysqli_real_escape_string($db, $_POST['address']);
   $email = mysqli_real_escape_string($db, $_POST['email']);
+  $role = mysqli_real_escape_string($db, $_POST['role']);
 
   // form validation: ensure that the form is correctly filled ...
   // by adding (array_push()) corresponding error unto $errors array
-  if (empty($username)) { array_push($errors, "Username is required"); }
-  if (empty($role)) { array_push($errors, "role is required"); }
-  if (empty($password_1)) { array_push($errors, "Password is required"); }
-    if (empty($fullname)) { array_push($errors, "Full Name is required"); }
+  if (empty($fullname)) { array_push($errors, "Please enter your full name"); }
+  if (empty($username)) { array_push($errors, "Please enter your username"); }
+  if (empty($password_1)) { array_push($errors, "Please enter your password"); }
+  if (empty($address)) { array_push($errors, "Please enter your address"); }
+  if (empty($email)) { array_push($errors, "Please enter your email"); }
+  if (empty($role)) { array_push($errors, "Please select a role"); }
   if ($password_1 != $password_2) {
 	array_push($errors, "The two passwords do not match");
   }
@@ -47,12 +50,12 @@ if (isset($_POST['reg_user'])) {
   if (count($errors) == 0) {
   	$password = md5($password_1);//encrypt the password before saving in the database
 
-  	$query = "INSERT INTO user (username, role, password,fullname,email) 
-  			  VALUES('$username', '$role', '$password', '$fullname', '$email')";
+  	$query = "INSERT INTO user (fullname, username, password, address, email, role) 
+  			  VALUES('$fullname', '$username', '$password','$address',  '$email', '$role')";
   	mysqli_query($db, $query);
   	$_SESSION['username'] = $username;
   	$_SESSION['success'] = "You are now logged in";
-  	header('location: index.php');
+  	header('location: login.php');
   }
 }
 // ... 
