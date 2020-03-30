@@ -15,12 +15,6 @@
                         <div class="nano-content">
                             <nav id="menu" class="nav-main" role="navigation">
                                 <ul class="nav nav-main">
-                                    <li class="">
-                                        <a href="index.html">
-                                            <i class="fa fa-home" aria-hidden="true"></i>
-                                            <span>Dashboard</span>
-                                        </a>
-                                    </li>
                                     <li class="nav-parent">
                                         <a>
                                             <i class="fa fa-copy" aria-hidden="true"></i>
@@ -43,6 +37,12 @@
                                         <a href="history.php">
                                             <i class="fa fa-tasks" aria-hidden="true"></i>
                                             <span>History of Submissions</span>
+                                        </a>
+                                    </li>
+                                    <li class="">
+                                        <a href="logout.php">
+                                            <i class="fa fa-user-profile" aria-hidden="true"></i>
+                                            <span>Logout</span>
                                         </a>
                                     </li>
                                 </ul>

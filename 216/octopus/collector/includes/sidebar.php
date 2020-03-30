@@ -14,12 +14,6 @@
                         <div class="nano-content">
                             <nav id="menu" class="nav-main" role="navigation">
                                 <ul class="nav nav-main">
-                                    <li class="nav-active">
-                                        <a href="dashboard.php">
-                                            <i class="fa fa-home" aria-hidden="true"></i>
-                                            <span>Dashboard</span>
-                                        </a>
-                                    </li>
                                     <li class="nav-parent">
                                         <a>
                                             <i class="fa fa-copy" aria-hidden="true"></i>
@@ -45,11 +39,17 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="changefullname.php?del=<?php echo htmlentities($result->id);?>">
+                                                <a href="changepassword.php?del=<?php echo htmlentities($result->id);?>">
                                                      Change Password
                                                 </a>
                                             </li>
                                         </ul>
+                                    </li>
+                                    <li class="">
+                                        <a href="logout.php">
+                                            <i class="fa fa-user-profile" aria-hidden="true"></i>
+                                            <span>Logout</span>
+                                        </a>
                                     </li>
                                 </ul>
                             </nav>

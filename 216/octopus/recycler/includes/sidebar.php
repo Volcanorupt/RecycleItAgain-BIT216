@@ -50,6 +50,12 @@
                                             </li>
                                         </ul>
                                     </li>
+                                    <li class="">
+                                        <a href="logout.php">
+                                            <i class="fa fa-user-profile" aria-hidden="true"></i>
+                                            <span>Logout</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </nav>
                         </div>

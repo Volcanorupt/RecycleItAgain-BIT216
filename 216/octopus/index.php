@@ -27,7 +27,7 @@ if($status==1)
 {
 $_SESSION['userlogin']=$_POST['username'];
 echo "<script>alert('Successfully login as Collector');</script>";
-echo "<script type='text/javascript'> document.location = 'collector/collector.php'; </script>";
+echo "<script type='text/javascript'> document.location = 'collector/submissions.php'; </script>";
 }
 elseif($status==2)
 {
@@ -39,7 +39,7 @@ elseif($status==3)
 {
 $_SESSION['userlogin']=$_POST['username'];
 echo "<script>alert('Successfully login as Admin');</script>";
-echo "<script type='text/javascript'> document.location = 'admin/admin.php'; </script>";
+echo "<script type='text/javascript'> document.location = 'admin/history.php'; </script>";
 }  
 }
 else{ 

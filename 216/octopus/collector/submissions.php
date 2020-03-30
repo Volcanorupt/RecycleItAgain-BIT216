@@ -91,21 +91,7 @@ $msg="Material deleted";
 				<!-- end: sidebar -->
 				<section role="main" class="content-body">
 					<header class="page-header">
-						<h2>Materials</h2>
-					
-						<div class="right-wrapper pull-right">
-							<ol class="breadcrumbs">
-								<li>
-									<a href="admin.php">
-										<i class="fa fa-home"></i>
-									</a>
-								</li>
-								<li><span>Materials</span></li>
-								<li><span>View Materials</span></li>
-							</ol>
-					
-							<a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
-						</div>
+						<h2>History</h2>
 					</header>
 
 					<!-- start: page -->

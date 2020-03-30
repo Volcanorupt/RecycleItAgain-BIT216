@@ -4,29 +4,20 @@ error_reporting(0);
 include('includes/config.php');
 if(strlen($_SESSION['userlogin'])==0)
     {   
-header('location:index.php');
+header("location:../index.php");
 }
 else{
-if(isset($_POST['update']))
+if(isset($_GET['del']))
 {
-$lid=intval($_GET['lid']);
-$name=$_POST['name'];
-$description=$_POST['description'];
-$points=$_POST['points'];
-$sql="update material set Name=:name,Description=:description, Points=:points where id=:lid";
+$id=$_GET['del'];
+$sql = "delete from  material  WHERE id=:id";
 $query = $dbh->prepare($sql);
-$query->bindParam(':name',$name,PDO::PARAM_STR);
-$query->bindParam(':description',$description,PDO::PARAM_STR);
-$query->bindParam(':points',$points,PDO::PARAM_STR);
-$query->bindParam(':lid',$lid,PDO::PARAM_STR);
-$query->execute();
-
-$msg="Material updated Successfully";
-
+$query -> bindParam(':id',$id, PDO::PARAM_STR);
+$query -> execute();
+$msg="Material deleted";
 
 }
-
-    ?>
+?>
 <!doctype html>
 <html class="fixed">
 	<head>
@@ -34,7 +25,7 @@ $msg="Material updated Successfully";
 		<!-- Basic -->
 		<meta charset="UTF-8">
 
-		<title>Admin | Edit Material</title>
+		<title>Admin | View Submissions</title>
 		<meta name="keywords" content="HTML5 Admin Template" />
 		<meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
 		<meta name="author" content="JSOFT.net">
@@ -100,139 +91,83 @@ $msg="Material updated Successfully";
 				<!-- end: sidebar -->
 				<section role="main" class="content-body">
 					<header class="page-header">
-						<h2>Materials</h2>
+						<h2>History</h2>
+					
+						<div class="right-wrapper pull-right">
+					
+					
+						</div>
 					</header>
 
 					<!-- start: page -->
-						<div class="row">
-							<div class="col-md-3"></div>
-							<div class="col-md-6">
-								<section class="panel">
-									<header class="panel-heading">
-										<h2 class="panel-title">Edit Materials</h2>
-									</header>
-									<div class="panel-body">
-										<form class="form-horizontal form-bordered" method="post">
-										<?php if($error){?><div class="errorWrap"><strong>ERROR</strong> : <?php echo htmlentities($error); ?> </div><?php } 
-                                        else if($msg){?><div class="succWrap"><strong>SUCCESS</strong> : <?php echo htmlentities($msg); ?> </div><?php }?>
-										
-										<?php
-										$lid=intval($_GET['lid']);
-										$sql = "SELECT * from material where id=:lid";
-										$query = $dbh -> prepare($sql);
-										$query->bindParam(':lid',$lid,PDO::PARAM_STR);
-										$query->execute();
-										$results=$query->fetchAll(PDO::FETCH_OBJ);
-										$cnt=1;
-										if($query->rowCount() > 0)
-										{
-										foreach($results as $result)
-										{               
-										?> 
+					<h3 class="mt-none"></h3>
 
-											<div class="form-group">
-												<label class="col-md-3 control-label" for="inputRounded">Material Name</label>
-												<div class="col-md-6">
-													<input id="name" type="text"  class="form-control" autocomplete="off" name="name" value="<?php echo htmlentities($result->Name);?>"  required>
-												</div>
-											</div>
+					<?php if($msg){?><div class="succWrap"><strong>SUCCESS</strong> : <?php echo htmlentities($msg); ?> </div><?php }?>
+
+					<section class="panel">
+							<header class="panel-heading">
+								<div class="panel-actions">
+								</div>
 						
-											<div class="form-group">
-												<label class="col-md-3 control-label" for="inputHelpText">Descriptions</label>
-												<div class="col-md-6">
-													<textarea id="textarea1" name="description" class="form-control" name="description" length="500"><?php echo htmlentities($result->Description);?></textarea>
-												</div>
-											</div>
-						
-											<div class="form-group">
-												<label class="col-md-3 control-label" for="inputRounded">Points/Kg</label>
-												<div class="col-md-6">
-													<input type="number" step="1" pattern="\d+"  name="points" class="form-control" name="points" value="<?php echo htmlentities($result->Points);?>" required>
-													
-												</div>
-											</div>
-											<?php }} ?>
-											<div class="form-group">
-												<div class="col-sm-9 col-sm-offset-3">
-												<button class="btn btn-primary" name="update">Update</button>
-												</div>
-											</div>
-										</form>
+								<h2 class="panel-title">List of Submissions</h2>
+							</header>
+
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-sm-6">
+										<?php if($error){?><div class="errorWrap"><strong>ERROR </strong>:<?php echo htmlentities($error); ?> </div><?php } 
+                						else if($msg){?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo htmlentities($msg); ?> </div><?php }?>
 									</div>
-								</section>
-							</div>
-						</div>		
-					<!-- end: page -->
-				</section>
-			</div>
+								</div>
+								<table class="table table-bordered table-striped mb-none" id="datatable-editable">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Recycler</th>
+											<th>Material</th>
+											<th>Weights</th>
+											<th>Total Points</th>
+											<th>Date</th>
+											<th>Status</th>
+										</tr>
+									</thead>
+									<tbody>
 
-			<aside id="sidebar-right" class="sidebar-right">
-				<div class="nano">
-					<div class="nano-content">
-						<a href="#" class="mobile-close visible-xs">
-							Collapse <i class="fa fa-chevron-right"></i>
-						</a>
-			
-						<div class="sidebar-right-wrapper">
-			
-							<div class="sidebar-widget widget-calendar">
-								<h6>Upcoming Tasks</h6>
-								<div data-plugin-datepicker data-plugin-skin="dark" ></div>
-			
-								<ul>
-									<li>
-										<time datetime="2014-04-19T00:00+00:00">04/19/2014</time>
-										<span>Company Meeting</span>
-									</li>
-								</ul>
+									<?php $sql = "SELECT submission.id as lid,user.Fullname,submission.Weights,submission.TotalPoints,user.id,submission.Name,submission.PostingDate,submission.Status from submission join user on submission.uid=user.id order by lid ";
+									$query = $dbh -> prepare($sql);
+									$query->execute();
+									$results=$query->fetchAll(PDO::FETCH_OBJ);
+									$cnt=1;
+									if($query->rowCount() > 0)
+									{
+									foreach($results as $result)
+									{         
+									      ?>  
+
+										<tr class="gradeX">
+											<td><?php echo htmlentities($cnt);?></td>
+											<td><?php echo htmlentities($result->Fullname);?></td>
+											<td><?php echo htmlentities($result->Name);?></td>
+											<td><?php echo htmlentities($result->Weights);?></td>
+											<td><?php echo htmlentities($result->TotalPoints);?></td>
+											<td><?php echo htmlentities($result->PostingDate);?></td>
+											<td><?php $stats=$result->Status;
+											if($stats==1){
+                                             ?>
+                                                 <span style="color: green">Approved</span>
+                                                 <?php } if($stats==2)  { ?>
+                                                <span style="color: red">Not Approved</span>
+                                                 <?php } if($stats==0)  { ?>
+												 <span style="color: blue">waiting for approval</span>
+												 <?php } ?>
+												</td>
+										</tr>
+									</tbody><?php }} ?>
+								</table>
 							</div>
-			
-							<div class="sidebar-widget widget-friends">
-								<h6>Friends</h6>
-								<ul>
-									<li class="status-online">
-										<figure class="profile-picture">
-											<img src="assets/images/!sample-user.jpg" alt="Joseph Doe" class="img-circle">
-										</figure>
-										<div class="profile-info">
-											<span class="name">Joseph Doe Junior</span>
-											<span class="title">Hey, how are you?</span>
-										</div>
-									</li>
-									<li class="status-online">
-										<figure class="profile-picture">
-											<img src="assets/images/!sample-user.jpg" alt="Joseph Doe" class="img-circle">
-										</figure>
-										<div class="profile-info">
-											<span class="name">Joseph Doe Junior</span>
-											<span class="title">Hey, how are you?</span>
-										</div>
-									</li>
-									<li class="status-offline">
-										<figure class="profile-picture">
-											<img src="assets/images/!sample-user.jpg" alt="Joseph Doe" class="img-circle">
-										</figure>
-										<div class="profile-info">
-											<span class="name">Joseph Doe Junior</span>
-											<span class="title">Hey, how are you?</span>
-										</div>
-									</li>
-									<li class="status-offline">
-										<figure class="profile-picture">
-											<img src="assets/images/!sample-user.jpg" alt="Joseph Doe" class="img-circle">
-										</figure>
-										<div class="profile-info">
-											<span class="name">Joseph Doe Junior</span>
-											<span class="title">Hey, how are you?</span>
-										</div>
-									</li>
-								</ul>
-							</div>
-			
-						</div>
-					</div>
-				</div>
-			</aside>
+						</section>
+						
+
 		</section>
 
 		<!-- Vendor -->
