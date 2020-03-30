@@ -5,16 +5,14 @@ include('includes/config.php');
 {
 if(isset($_POST['add']))
 {
-$empid=$_POST['empcode'];
 $fullname=$_POST['fullname'];  
 $username=$_POST['username']; 
 $password=md5($_POST['password']); 
 $address=$_POST['address']; 
 $points=0;
 $status=1;
-$sql="INSERT INTO user(EmpId,Fullname,Username,Password,Address,points,Status) VALUES(:empid,:fullname,:username,:password,:address,:points,:status)";
+$sql="INSERT INTO user(Fullname,Username,Password,Address,points,Status) VALUES(:fullname,:username,:password,:address,:points,:status)";
 $query = $dbh->prepare($sql);
-$query->bindParam(':empid',$empid,PDO::PARAM_STR);
 $query->bindParam(':fullname',$fullname,PDO::PARAM_STR);
 $query->bindParam(':username',$username,PDO::PARAM_STR);
 $query->bindParam(':password',$password,PDO::PARAM_STR);
@@ -149,11 +147,6 @@ error:function (){}
 						<?php if($error){?><div class="errorWrap"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } 
                 		else if($msg){?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo htmlentities($msg); ?> </div><?php }?>
     					<?php include('errors.php'); ?>
-							<div class="form-group mb-lg">
-								<label>Empcode</label>
-								<input  name="empcode" id="empcode" class="form-control input-lg" onBlur="checkAvailabilityEmpid()" type="text" autocomplete="off" required>
-								<span id="empid-availability" style="font-size:12px;"></span> 
-							</div>
 
 							<div class="form-group mb-lg">
 								<label>Full Name</label>
