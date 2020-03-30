@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Recycle It Again System</title>
+  <title>Recycle It Again Homepage</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="" name="keywords">
   <meta content="" name="description">
@@ -54,19 +54,12 @@
     <div class="container text-center">
       <div class="row">
         <div class="col-md-12">
-          <a class="hero-brand" href="index.html" title="Home"><img alt="Recyle It Again Logo" src="assets/images/logo.png"></a>
+          <a class="hero-brand" href="index.html" title="Home"><img alt="Bell Logo" src="img/logo.png"></a>
         </div>
       </div>
 
       <div class="col-md-12">
-        <h1>
-            Welcome to Recycling It Again System
-          </h1>
-
-        <p class="tagline">
-          
-        </p>
-        <a class="btn btn-full" href="login.php">Get Started Now</a>
+        <a class="btn btn-full" href="octopus/index.php">Get Started Now</a>
       </div>
     </div>
 
