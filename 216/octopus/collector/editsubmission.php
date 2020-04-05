@@ -105,7 +105,7 @@ $msg="Submission updated Successfully";
               <div class="col-md-6">
                 <section class="panel">
                   <header class="panel-heading">
-                    <h2 class="panel-title">Edit Materials</h2>
+                    <h2 class="panel-title">Update Submission</h2>
                   </header>
                   <div class="panel-body">
                     <form class="form-horizontal form-bordered" method="post">
