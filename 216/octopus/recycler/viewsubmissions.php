@@ -2,21 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/config.php');
-if(strlen($_SESSION['userlogin'])==0)
-    {   
-header('location:index.php');
-}
-else{
-if(isset($_GET['del']))
 {
-$id=$_GET['del'];
-$sql = "delete from  material  WHERE id=:id";
-$query = $dbh->prepare($sql);
-$query -> bindParam(':id',$id, PDO::PARAM_STR);
-$query -> execute();
-$msg="Material deleted";
-
-}
 ?>
 <!doctype html>
 <html class="fixed">
@@ -25,7 +11,7 @@ $msg="Material deleted";
 		<!-- Basic -->
 		<meta charset="UTF-8">
 
-		<title>Admin | View Material</title>
+		<title>Recycler | View Submissions</title>
 		<meta name="keywords" content="HTML5 Admin Template" />
 		<meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
 		<meta name="author" content="JSOFT.net">
@@ -91,20 +77,11 @@ $msg="Material deleted";
 				<!-- end: sidebar -->
 				<section role="main" class="content-body">
 					<header class="page-header">
-						<h2>Materials</h2>
+						<h2>History</h2>
 					
 						<div class="right-wrapper pull-right">
-							<ol class="breadcrumbs">
-								<li>
-									<a href="admin.php">
-										<i class="fa fa-home"></i>
-									</a>
-								</li>
-								<li><span>Materials</span></li>
-								<li><span>View Materials</span></li>
-							</ol>
 					
-							<a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+					
 						</div>
 					</header>
 
@@ -117,8 +94,7 @@ $msg="Material deleted";
 							<header class="panel-heading">
 								<div class="panel-actions">
 								</div>
-						
-								<h2 class="panel-title">List of Materials</h2>
+								<h2 class="panel-title">List of Submissions</h2>
 							</header>
 
 							<div class="panel-body">
@@ -131,40 +107,60 @@ $msg="Material deleted";
 								<table class="table table-bordered table-striped mb-none" id="datatable-editable">
 									<thead>
 										<tr>
-											<th>Name</th>
-											<th>Description</th>
-											<th>Points/Kg</th>
-											<th>Actions</th>
+											<th>No</th>
+											<th>Material</th>
+											<th>Weights</th>
+											<th>Total Points</th>
+											<th>Date Submitted</th>
+											<th>Date Collected</th>
+											<th>Status</th>
 										</tr>
 									</thead>
 									<tbody>
 
-										<?php $sql = "SELECT * from material";
-										$query = $dbh -> prepare($sql);
-										$query->execute();
-										$results=$query->fetchAll(PDO::FETCH_OBJ);
-										$cnt=1;
-										if($query->rowCount() > 0)
-										{
-										foreach($results as $result)
-										{               
-										?>
+<?php 
+$uid=$_SESSION['uid'];
+$sql = "SELECT * from submission where uid=:uid";
+$query = $dbh -> prepare($sql);
+$query->bindParam(':uid',$uid,PDO::PARAM_STR);
+$query->execute();
+$results=$query->fetchAll(PDO::FETCH_OBJ);
+$cnt=1;
+if($query->rowCount() > 0)
+{
+foreach($results as $result)
+{               ?>  
 
 										<tr class="gradeX">
+											<td><?php echo htmlentities($cnt);?></td>
 											<td><?php echo htmlentities($result->Name);?></td>
-											<td><?php echo htmlentities($result->Description);?></td>
-											<td><?php echo htmlentities($result->Points);?></td>
-											<td class="actions">
-												<div class="mb-md">
-													<a href="confirmsubmission.php?lid=<?php echo htmlentities($result->id);?>" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
-													<a href="viewmaterial.php?del=<?php echo htmlentities($result->id);?>" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-												</div>
-											</td>
+											<td><?php echo htmlentities($result->Weights);?></td>
+											<td><?php echo htmlentities($result->TotalPoints);?></td>
+											<td><?php echo htmlentities($result->PostingDate);?></td>
+											<td><?php
+												if($result->CollectDate==""){
+												  echo "Not Collected Yet";  
+												}
+												else{
+												echo htmlentities($result->CollectDate);
+												}
+												?></td>
+											<td><?php $stats=$result->Status;
+											if($stats==1){
+                                             ?>
+                                                 <span style="color: green">Collected</span>
+                                                 <?php } if($stats==2)  { ?>
+                                                <span style="color: red">Rejected</span>
+                                                 <?php } if($stats==0)  { ?>
+												 <span style="color: blue">Waiting for collection</span>
+												 <?php } ?>
+												</td>
 										</tr>
-									</tbody><?php }} ?>
+									</tbody><?php $cnt++;}} ?>
 								</table>
 							</div>
 						</section>
+						
 
 		</section>
 

@@ -14,7 +14,7 @@ $sql = "delete from  material  WHERE id=:id";
 $query = $dbh->prepare($sql);
 $query -> bindParam(':id',$id, PDO::PARAM_STR);
 $query -> execute();
-$msg="Material deleted";
+$msg=" Material deleted";
 
 }
 ?>
@@ -98,7 +98,6 @@ $msg="Material deleted";
 					<!-- start: page -->
 					<h3 class="mt-none"></h3>
 
-					<?php if($msg){?><div class="succWrap"><strong>SUCCESS</strong> : <?php echo htmlentities($msg); ?> </div><?php }?>
 
 					<section class="panel">
 							<header class="panel-heading">
@@ -118,6 +117,7 @@ $msg="Material deleted";
 								<table class="table table-bordered table-striped mb-none" id="datatable-editable">
 									<thead>
 										<tr>
+											<th>#</th>
 											<th>Name</th>
 											<th>Description</th>
 											<th>Points/Kg</th>
@@ -138,17 +138,18 @@ $msg="Material deleted";
 										?>
 
 										<tr class="gradeX">
+											<td><?php echo htmlentities($cnt);?></td>
 											<td><?php echo htmlentities($result->Name);?></td>
 											<td><?php echo htmlentities($result->Description);?></td>
 											<td><?php echo htmlentities($result->Points);?></td>
 											<td class="actions">
 												<div class="mb-md">
-													<a href="editmaterial.php?lid=<?php echo htmlentities($result->id);?>" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
-													<a href="viewmaterial.php?del=<?php echo htmlentities($result->id);?>" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+													<a href="editmaterial.php?mid=<?php echo htmlentities($result->id);?>" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
+													<a href="viewmaterial.php?del=<?php echo htmlentities($result->id);?>"  onclick="return confirm('Do you want to delete this material?');"><i class="fa fa-trash-o"></i></a>
 												</div>
 											</td>
 										</tr>
-									</tbody><?php }} ?>
+									</tbody><?php $cnt++;}} ?>
 								</table>
 							</div>
 						</section>

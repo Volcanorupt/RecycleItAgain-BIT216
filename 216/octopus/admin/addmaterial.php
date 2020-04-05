@@ -69,6 +69,22 @@ $error="Something went wrong. Please try again";
 
 		<!-- Head Libs -->
 		<script src="assets/vendor/modernizr/modernizr.js"></script>
+
+		<script>
+			function checkAvailabilityMaterial() {
+			$("#loaderIcon").show();
+			jQuery.ajax({
+			url: "check_availability.php",
+			data:'name='+$("#name").val(),
+			type: "POST",
+			success:function(data){
+			$("#material-availability").html(data);
+			$("#loaderIcon").hide();
+			},
+			error:function (){}
+			});
+			}
+		</script>
  <style>
 .errorWrap 
 {
@@ -120,7 +136,8 @@ $error="Something went wrong. Please try again";
 											<div class="form-group">
 												<label class="col-md-3 control-label" for="inputRounded">Material Name</label>
 												<div class="col-md-6">
-													<input type="text" name="name" class="form-control" id="inputRounded" required="">
+													<input type="text" name="name" id="name" onBlur="checkAvailabilityMaterial()" class="form-control" id="inputRounded" required="">
+													<span id="material-availability" style="font-size:12px;"></span>
 												</div>
 											</div>
 						
@@ -139,7 +156,7 @@ $error="Something went wrong. Please try again";
 											</div>
 											<div class="form-group">
 												<div class="col-sm-9 col-sm-offset-3">
-												<button class="btn btn-primary" name="add">Submit</button>
+												<button class="btn btn-primary" id="add" name="add">Confirm</button>
 												</div>
 											</div>
 										</form>

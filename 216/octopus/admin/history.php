@@ -122,18 +122,19 @@ $msg="Material deleted";
 								<table class="table table-bordered table-striped mb-none" id="datatable-editable">
 									<thead>
 										<tr>
-											<th>#</th>
+											<th>No</th>
 											<th>Recycler</th>
 											<th>Material</th>
 											<th>Weights</th>
 											<th>Total Points</th>
-											<th>Date</th>
+											<th>Date Submitted</th>
+											<th>Date Collected</th>
 											<th>Status</th>
 										</tr>
 									</thead>
 									<tbody>
 
-									<?php $sql = "SELECT submission.id as lid,user.Fullname,submission.Weights,submission.TotalPoints,user.id,submission.Name,submission.PostingDate,submission.Status from submission join user on submission.uid=user.id order by lid ";
+									<?php $sql = "SELECT submission.id as sid,user.Fullname,submission.Weights,submission.CollectDate,submission.TotalPoints,user.id,submission.Name,submission.PostingDate,submission.Status from submission join user on submission.uid=user.id order by sid ";
 									$query = $dbh -> prepare($sql);
 									$query->execute();
 									$results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -151,18 +152,26 @@ $msg="Material deleted";
 											<td><?php echo htmlentities($result->Weights);?></td>
 											<td><?php echo htmlentities($result->TotalPoints);?></td>
 											<td><?php echo htmlentities($result->PostingDate);?></td>
+											<td><?php
+												if($result->CollectDate==""){
+												  echo "Not Collected Yet";  
+												}
+												else{
+												echo htmlentities($result->CollectDate);
+												}
+												?></td>
 											<td><?php $stats=$result->Status;
 											if($stats==1){
                                              ?>
-                                                 <span style="color: green">Approved</span>
+                                                 <span style="color: green">Collected</span>
                                                  <?php } if($stats==2)  { ?>
-                                                <span style="color: red">Not Approved</span>
+                                                <span style="color: red">Rejected</span>
                                                  <?php } if($stats==0)  { ?>
-												 <span style="color: blue">waiting for approval</span>
+												 <span style="color: blue">Waiting for collection</span>
 												 <?php } ?>
 												</td>
 										</tr>
-									</tbody><?php }} ?>
+									</tbody><?php $cnt++;}} ?>
 								</table>
 							</div>
 						</section>

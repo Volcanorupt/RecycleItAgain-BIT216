@@ -2,11 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/config.php');
-if(strlen($_SESSION['userlogin'])==0)
-    {   
-header('location:index.php');
-}
-else{
+{
 if(isset($_POST['confirm']))
 {
 $uid=$_SESSION['uid'];
@@ -127,10 +123,10 @@ $error="Something went wrong. Please try again";
 										<?php if($error){?><div class="errorWrap"><strong>ERROR</strong> : <?php echo htmlentities($error); ?> </div><?php } 
                                         else if($msg){?><div class="succWrap"><strong>SUCCESS</strong> : <?php echo htmlentities($msg); ?> </div><?php }?>
 <?php
-$lid=intval($_GET['lid']);
-$sql = "SELECT * from material where id=:lid";
+$sid=intval($_GET['sid']);
+$sql = "SELECT * from material where id=:sid";
 $query = $dbh -> prepare($sql);
-$query->bindParam(':lid',$lid,PDO::PARAM_STR);
+$query->bindParam(':sid',$sid,PDO::PARAM_STR);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
 $cnt=1;

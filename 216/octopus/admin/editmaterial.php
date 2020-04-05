@@ -9,16 +9,16 @@ header('location:index.php');
 else{
 if(isset($_POST['update']))
 {
-$lid=intval($_GET['lid']);
+$mid=intval($_GET['mid']);
 $name=$_POST['name'];
 $description=$_POST['description'];
 $points=$_POST['points'];
-$sql="update material set Name=:name,Description=:description, Points=:points where id=:lid";
+$sql="update material set Name=:name,Description=:description, Points=:points where id=:mid";
 $query = $dbh->prepare($sql);
 $query->bindParam(':name',$name,PDO::PARAM_STR);
 $query->bindParam(':description',$description,PDO::PARAM_STR);
 $query->bindParam(':points',$points,PDO::PARAM_STR);
-$query->bindParam(':lid',$lid,PDO::PARAM_STR);
+$query->bindParam(':mid',$mid,PDO::PARAM_STR);
 $query->execute();
 
 $msg="Material updated Successfully";
@@ -117,10 +117,10 @@ $msg="Material updated Successfully";
                                         else if($msg){?><div class="succWrap"><strong>SUCCESS</strong> : <?php echo htmlentities($msg); ?> </div><?php }?>
 										
 										<?php
-										$lid=intval($_GET['lid']);
-										$sql = "SELECT * from material where id=:lid";
+										$mid=intval($_GET['mid']);
+										$sql = "SELECT * from material where id=:mid";
 										$query = $dbh -> prepare($sql);
-										$query->bindParam(':lid',$lid,PDO::PARAM_STR);
+										$query->bindParam(':mid',$mid,PDO::PARAM_STR);
 										$query->execute();
 										$results=$query->fetchAll(PDO::FETCH_OBJ);
 										$cnt=1;

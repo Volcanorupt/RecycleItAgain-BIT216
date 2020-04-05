@@ -2,35 +2,20 @@
 session_start();
 error_reporting(0);
 include('includes/config.php');
-if(strlen($_SESSION['userlogin'])==0)
-    {   
-header('location:index.php');
-}
-else{
-
-// code for update the read notification status
-$isread=1;
-$did=intval($_GET['leaveid']);  
-date_default_timezone_set('Asia/Kolkata');
-$admremarkdate=date('Y-m-d G:i:s ', strtotime("now"));
-$sql="update submission set IsRead=:isread where id=:did";
-$query = $dbh->prepare($sql);
-$query->bindParam(':isread',$isread,PDO::PARAM_STR);
-$query->bindParam(':did',$did,PDO::PARAM_STR);
-$query->execute();
-
-// code for action taken on leave
+{
 if(isset($_POST['update']))
 { 
-$did=intval($_GET['leaveid']);
+$cid=$_SESSION['uid'];
+$did=intval($_GET['materialid']);
 $status=$_POST['status'];   
-date_default_timezone_set('Asia/Kolkata');
-$admremarkdate=date('Y-m-d G:i:s ', strtotime("now"));
-$sql="update submission set Status=:status,AdminRemarkDate=:admremarkdate where id=:did";
+date_default_timezone_set('Asia/Singapore');
+$cdate=date('Y-m-d G:i:s ', strtotime("now"));
+$sql="update submission set Status=:status, cid=:cid, CollectDate=:cdate where id=:did";
 $query = $dbh->prepare($sql);
 $query->bindParam(':status',$status,PDO::PARAM_STR);
-$query->bindParam(':admremarkdate',$admremarkdate,PDO::PARAM_STR);
+$query->bindParam(':cdate',$cdate,PDO::PARAM_STR);
 $query->bindParam(':did',$did,PDO::PARAM_STR);
+$query->bindParam(':cid',$cid,PDO::PARAM_STR);
 $query->execute();
 $msg="Submission updated Successfully";
 }
@@ -128,10 +113,10 @@ $msg="Submission updated Successfully";
                                         else if($msg){?><div class="succWrap"><strong>SUCCESS</strong> : <?php echo htmlentities($msg); ?> </div><?php }?>
                     
                                       <?php 
-                                      $lid=intval($_GET['leaveid']);
-                                      $sql = "SELECT submission.id as lid,user.Fullname,user.id,submission.Name,submission.PostingDate,submission.Status,submission.Weights,submission.TotalPoints,submission.AdminRemarkDate from submission join user on submission.uid=user.id where submission.id=:lid";
+                                      $sid=intval($_GET['materialid']);
+                                      $sql = "SELECT submission.id as sid,user.Fullname,user.id,submission.Name,submission.PostingDate,submission.Status,submission.Weights,submission.TotalPoints,submission.CollectDate from submission join user on submission.uid=user.id where submission.id=:sid";
                                       $query = $dbh -> prepare($sql);
-                                      $query->bindParam(':lid',$lid,PDO::PARAM_STR);
+                                      $query->bindParam(':sid',$sid,PDO::PARAM_STR);
                                       $query->execute();
                                       $results=$query->fetchAll(PDO::FETCH_OBJ);
                                       $cnt=1;
@@ -180,11 +165,11 @@ $msg="Submission updated Successfully";
                         <label class="col-md-3 control-label" for="inputHelpText">Collected Date</label>
                         <div class="col-md-6">
                           <textarea id="textarea1" name="" class="form-control" readonly><?php
-                            if($result->AdminRemarkDate==""){
+                            if($result->CollectDate==""){
                             echo "Not Collected Yet";  
                             }
                             else{
-                            echo htmlentities($result->AdminRemarkDate);
+                            echo htmlentities($result->CollectDate);
                             }
                             ?></textarea>
                         </div>
@@ -193,10 +178,14 @@ $msg="Submission updated Successfully";
                       <div class="form-group">
                         <label class="col-md-3 control-label" for="inputHelpText">Status</label>
                         <div class="col-md-6">
-                          <textarea id="textarea1" name="" class="form-control" name="description" ><?php $stats=$result->Status;if($stats==1){?>Approved<?php }if($stats==2)  { ?>Not Approved<?php }if($stats==0)  { ?>waiting for approval<?php } ?></textarea>
+                          <textarea id="textarea1" name="" class="form-control" readonly><?php $stats=$result->Status;if($stats==1){?>Collected<?php }if($stats==2)  { ?>Rejected<?php }if($stats==0)  { ?>Waiting for collection<?php } ?></textarea>
                         </div>
                       </div>
-
+                      
+<?php 
+if($stats==0)
+{
+?>
                       <div class="form-group">
                         <label class="col-md-3 control-label" for="inputHelpText">Action</label>
                         <div class="col-md-6">
@@ -207,12 +196,14 @@ $msg="Submission updated Successfully";
                           </select>
                         </div>
                       </div>
-                      
+
                       <div class="form-group">
                         <div class="col-sm-9 col-sm-offset-3">
                         <button class="btn btn-primary" name="update">Confirm</button>
                         </div>
-                      </div> <?php } ?>
+                      </div>
+<?php } ?>
+                       <?php } ?>
                      <?php $cnt++;} }?>
                     </form>
                   </div>
