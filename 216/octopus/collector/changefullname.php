@@ -2,11 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/config.php');
-if(strlen($_SESSION['userlogin'])==0)
-    {   
-header("location:../index.php");
-}
-else{
+{
 $uid=$_SESSION['userlogin'];
 // Code for change password 
 if(isset($_POST['change']))
@@ -29,7 +25,7 @@ $msg="Name updated Successfully";
 		<!-- Basic -->
 		<meta charset="UTF-8">
 
-		<title>Collector | Profile</title>
+		<title>Collector | Change Name</title>
 		<meta name="keywords" content="HTML5 Admin Template" />
 		<meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
 		<meta name="author" content="JSOFT.net">
@@ -62,6 +58,21 @@ $msg="Name updated Successfully";
 
 		<!-- Head Libs -->
 		<script src="assets/vendor/modernizr/modernizr.js"></script>
+		<script>
+			function checkAvailabilityFullName() {
+			$("#loaderIcon").show();
+			jQuery.ajax({
+			url: "check_availability.php",
+			data:'fullname='+$("#fullname").val(),
+			type: "POST",
+			success:function(data){
+			$("#fullname-availability").html(data);
+			$("#loaderIcon").hide();
+			},
+			error:function (){}
+			});
+			}
+		</script>
 		<style>
         .errorWrap {
 		    padding: 10px;
@@ -121,22 +132,17 @@ if($query->rowCount() > 0)
 {
 foreach($results as $result)
 {               ?>  
-											<div class="form-group">
-												<label class="col-md-3 control-label" for="inputRounded">Current Name</label>
-												<div class="col-md-6">
-													<input class="form-control" id="fullname" type=""  class="validate" autocomplete="off" name="fullname" value="<?php echo htmlentities($result->Fullname);?>" readonly>
-												</div>
-											</div>
-						
+
 											<div class="form-group">
 												<label class="col-md-3 control-label" for="inputHelpText">New Name</label>
 												<div class="col-md-6">
-													<input id="fullname" type="" name="fullname" class="form-control" autocomplete="off" required></textarea>
+													<input id="fullname" type="" name="fullname" onBlur="checkAvailabilityFullName()" class="form-control" autocomplete="off" required></textarea>
+													<span id="fullname-availability" style="font-size:12px;"></span>
 												</div>
 											</div>
 											<div class="form-group">
 												<div class="col-sm-9 col-sm-offset-3">
-												<button type="submit" name="change" class="btn btn-primary" onclick="return valid();">Change</button>
+												<button type="submit" name="change" id="change" class="btn btn-primary" onclick="return valid();">Change</button>
 												</div>
 											</div><?php }} ?>
 										</form>

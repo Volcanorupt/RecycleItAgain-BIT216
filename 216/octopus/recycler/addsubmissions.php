@@ -2,10 +2,6 @@
 session_start();
 error_reporting(0);
 include('includes/config.php');
-if(strlen($_SESSION['userlogin'])==0)
-    {   
-header("location:../index.php");
-}
 ?>
 <!doctype html>
 <html class="fixed">
@@ -131,7 +127,7 @@ header("location:../index.php");
 											<td><?php echo htmlentities($result->Points);?></td>
 											<td class="actions">
 												<div class="mb-md">
-													<a href="confirmsubmission.php?lid=<?php echo htmlentities($result->id);?>" class="on-default edit-row"><button type="submit" name="signin" class="btn btn-primary hidden-xs">Submit</button></a>
+													<a href="confirmsubmission.php?sid=<?php echo htmlentities($result->id);?>" class="on-default edit-row"><button type="submit" name="signin" class="btn btn-primary hidden-xs">Submit</button></a>
 												</div>
 											</td>
 										</tr>
