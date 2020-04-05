@@ -3,15 +3,6 @@ session_start();
 error_reporting(0);
 include('includes/config.php');
 {
-if(isset($_GET['del']))
-{
-$id=$_GET['del'];
-$sql = "delete from  material  WHERE id=:id";
-$query = $dbh->prepare($sql);
-$query -> bindParam(':id',$id, PDO::PARAM_STR);
-$query -> execute();
-$msg="Material deleted";
-}
 ?>
 <!doctype html>
 <html class="fixed">
